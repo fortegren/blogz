@@ -10,7 +10,7 @@
         <ul style='list-style: none'>
             {% for blog in blogs %}
                 <li>
-                    {% if blogs|length>1 %}
+                    {% if page_title=='Build a Blog' %}
                     <form><input type='hidden' name='blog-id' value={{blog.id}}>
                     <a href='/blog?id={{blog.id}}/'>{{blog.title}}</a>
                     </form>
