@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            h1{font-size: 3em; color:blueviolet; text-align:center;}
+            .error{color:red;}
+            .blogname{color:black; text-decoration: underline; font-size: 2em;}
+        </style>
+        <title>{{ title }}</title>
+        <nav>
+            <a href='/blog'>Main Page</a>
+            <a href='/newpost'>Add a Blog</a>
+        </nav>
+    </head>
+
+    <body>
+        {% block content %}
+        {% endblock %}
+    </body>
+
+</html>
