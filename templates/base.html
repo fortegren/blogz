@@ -2,18 +2,22 @@
 <html>
     <head>
         <link rel= "stylesheet" type= "text/css" href= "/static/style/style.css">
-        <title>{{ title }}</title>
+        <title>Build a Blog</title>
 
         <div class='page-header'>
             <nav>
                 <a href='/blog'>Main Page</a>
                 <a href='/newpost'>Add a Blog</a>
             </nav>
+            <h1>
+                {{page_title}}
+            </h1>
         </div>
 
     </head>
 
     <body>
+
                 {% block content %}
                 {% endblock %}
     </body>

@@ -43,8 +43,8 @@ def index():
 
 @app.route('/newpost')
 def add_blog():
-
-    return render_template('newpost.html')
+    page_title = "Add a New Post"
+    return render_template('newpost.html', page_title=page_title)
 
 @app.route('/validate', methods=['POST', 'GET'])
 def validate_blog_form():
