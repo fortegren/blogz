@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <style>
-            h1{font-size: 3em; color:blueviolet; text-align:center;}
-            .error{color:red;}
-            .blogname{color:black; text-decoration: underline; font-size: 2em;}
-        </style>
+        <link rel= "stylesheet" type= "text/css" href= "/static/style/style.css">
         <title>{{ title }}</title>
-        <nav>
-            <a href='/blog'>Main Page</a>
-            <a href='/newpost'>Add a Blog</a>
-        </nav>
+
+        <div class='page-header'>
+            <nav>
+                <a href='/blog'>Main Page</a>
+                <a href='/newpost'>Add a Blog</a>
+            </nav>
+        </div>
+
     </head>
 
     <body>
-        {% block content %}
-        {% endblock %}
+                {% block content %}
+                {% endblock %}
     </body>
 
 </html>

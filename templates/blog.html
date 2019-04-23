@@ -2,22 +2,27 @@
 
 {% block content %}
 
-    <h1 class='main-title'>
-        {{page_title}}
-    </h1>
-    </form>
+    <div class='page-header'>
+        <h1>
+            {{page_title}}
+        </h1>
+    </div>
 
-        <ul style='list-style: none'>
-            {% for blog in blogs %}
-                <li>
-                    {% if page_title=='Build a Blog' %}
-                    <form><input type='hidden' name='blog-id' value={{blog.id}}>
-                    <a href='/blog?id={{blog.id}}/'>{{blog.title}}</a>
-                    </form>
-                    {% endif %}
-                <p>{{blog.body}}</p></li>
-                <hr/>
-            {% endfor %}
-        </ul> 
+
+        <div class='page-content'>
+            <ul style='list-style: none'>
+                {% for blog in blogs %}
+                    <li>
+                        {% if page_title=='Build a Blog' %}
+                            <form><input type='hidden' name='blog-id' value={{blog.id}}>
+                            <a href='/blog?id={{blog.id}}/'>{{blog.title}}</a>
+                            </form>
+                        {% endif %}
+                    <p>{{blog.body}}</p></li>
+                    <hr/>
+                {% endfor %}
+            </ul> 
+        </div>
+
 
 {% endblock %}
