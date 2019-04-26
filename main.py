@@ -49,19 +49,37 @@ def require_login():
         return redirect('/login')
 
 
+@app.route('/')
+def index():
+    #join Users and Blogs basedon user ID (foreign key)
+    authors = User.query.join(User.blog)
+    
+    return render_template('index.html', authors=authors)
+
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
     blog_id = request.args.get('id')
+    user_id = request.args.get('user_id')
 
+    authors = User.query.join(User.blog)
+
+    if user_id:
+        # CAN JOIN THEN QUERY??? blogs = User.query.filter_by(id=user_id).join(User.blog)
+        blogs = Blog.query.filter_by(author_id=user_id).all()
+        author = User.query.filter_by(id=user_id).first()
+        page_title = author.username + "'s Blogs"
+        return render_template('singleUser.html', blogs=blogs, page_title=page_title, author=author)
 
     if blog_id:
         blogs = Blog.query.filter_by(id=blog_id).all()
+        author = User.query.filter_by(id=blogs[0].author_id).first()
         page_title = blogs[0].title
     else:
         page_title = "Build a Blog"
         blogs = Blog.query.order_by(Blog.date.desc()).all()
+        author = User.query.all()
 
-    return render_template('blog.html', blogs=blogs, page_title=page_title)
+    return render_template('blog.html', blogs=blogs, page_title=page_title, author=author)
 
 
 @app.route('/newpost', methods=['POST', 'GET'])
@@ -174,9 +192,6 @@ def login():
 def logout():
     del session['username']
     return redirect('/blog')
-
-#@app.route('/index')
-#def index():
 
 
 if __name__ == '__main__':

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        <div class='page-content'>
+            <ul style='list-style: none'>
+                {% for blog in blogs %}
+                    <li>
+                        <form><input type='hidden' name='blog-id' value='{{blog.id}}' />
+                        <a href='/blog?id={{blog.id}}/'>{{blog.title}}</a>
+                        </form>
+                    <p>{{blog.body}}</p>
+                    <p>Written {{blog.date}}</p>
+                    </li>
+                    <hr/>
+                {% endfor %}
+            </ul> 
+        </div>
+
+
+{% endblock %}
