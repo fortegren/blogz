@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel= "stylesheet" type= "text/css" href= "/static/style/style.css">
+        <!-- <link rel= "stylesheet" type= "text/css" href= "/static/style/style.css"> -->
+        <style>
+        .error{color:red;}
+        .success{color:blue;}
+        </style>
+
         <title>Build a Blog</title>
 
         <div class='page-header'>
             <nav>
                 <a href='/blog'>Main Page</a>
                 <a href='/newpost'>Add a Blog</a>
+                <a href='/login'>Log In</a>
+                <a href = '/logout'>Log Out</a>
+                <a href = '/'>INDEX</a>
             </nav>
             <h1>
                 {{page_title}}
@@ -18,8 +26,8 @@
 
     <body>
 
-                {% block content %}
-                {% endblock %}
+        {% block content %}
+        {% endblock %}
     </body>
 
 </html>
