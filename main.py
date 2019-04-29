@@ -1,6 +1,7 @@
 from flask import Flask, request, redirect, render_template, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import hashlib
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -66,10 +67,8 @@ def blog():
     if page_num:
         page_num = int(page_num)
 
-    authors = User.query.join(User.blog)
 
     if user_id:
-        # CAN JOIN THEN QUERY??? blogs = User.query.filter_by(id=user_id).join(User.blog)
         user_blogs = Blog.query.filter_by(author_id=user_id).join(User).paginate(per_page = 5, page=page_num)
         user = User.query.filter_by(id=user_id).first()
         page_title = user.username + "'s Blogs"
@@ -113,7 +112,7 @@ def add_blog():
 
             blog_id = str(new_blog.id)
 
-            return redirect('/blog/0?id='+blog_id)
+            return redirect('/blog?id='+blog_id)
 
     return render_template('newpost.html', page_title=page_title)
 
@@ -149,7 +148,8 @@ def signup():
                 ver_error = "Your passwords do not match."
             
             if not user_error and not pass_error and not ver_error:
-                new_user = User(username, password)
+                encrypted_password = encrypt_password(password)
+                new_user = User(username, encrypted_password)
                 db.session.add(new_user)
                 db.session.commit()
                 session['username'] = username
@@ -161,6 +161,8 @@ def signup():
     
     return render_template('signup.html', username=username, password=password, verify=pass_ver, user_error=user_error, ver_error=ver_error, pass_error=pass_error)
 
+def encrypt_password(password):
+    return hashlib.sha256(str.encode(password)).hexdigest()
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -176,20 +178,24 @@ def login():
 
         user = User.query.filter_by(username=username).first()
 
-        if user and user.password == password:
+        if user and check_password(password, user.password):
             session['username'] = username
             return redirect('/newpost')
         
-        elif user and user.password != password:
-            password = ''
-            error = 'Password or username is incorrect!'
-        
-        elif not user:
+        else:
             username=''
             password=''
             error = 'Password or username is incorrect!'
 
     return render_template('login.html', username=username, password=password, error=error)
+
+
+def check_password(password, encrypted_password):
+    if encrypt_password(password) == encrypted_password:
+        return True
+    
+    return False
+
 
 @app.route('/logout')
 def logout():
