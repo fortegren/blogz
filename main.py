@@ -2,6 +2,8 @@ from flask import Flask, request, redirect, render_template, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import hashlib
+import random
+import string
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -161,8 +163,14 @@ def signup():
     
     return render_template('signup.html', username=username, password=password, verify=pass_ver, user_error=user_error, ver_error=ver_error, pass_error=pass_error)
 
-def encrypt_password(password):
-    return hashlib.sha256(str.encode(password)).hexdigest()
+def make_salt():
+    return ''.join([random.choice(string.ascii_letters) for x in range(5)])
+
+def encrypt_password(password, salt=None):
+    if not salt:
+        salt = make_salt()
+    hash = hashlib.sha256(str.encode(password + salt)).hexdigest()
+    return '{0},{1}'.format(hash, salt)
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -191,7 +199,8 @@ def login():
 
 
 def check_password(password, encrypted_password):
-    if encrypt_password(password) == encrypted_password:
+    salt = encrypted_password.split(',')[1]
+    if encrypt_password(password, salt) == encrypted_password:
         return True
     
     return False
